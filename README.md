@@ -6,7 +6,7 @@ A tool to generate yaml file use &#39;in-block&#39; profile.
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/yprofile.svg)](https://npmjs.org/package/yprofile)
 [![Downloads/week](https://img.shields.io/npm/dw/yprofile.svg)](https://npmjs.org/package/yprofile)
-[![License](https://img.shields.io/npm/l/yprofile.svg)](https://github.com/holytiny/yaml-profile/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/yprofile.svg)](https://github.com/https://github.com/holytiny/yaml-profile.git/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
