@@ -29,7 +29,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/holytiny/yaml-profile",
+  "homepage": "https://github.com/holytiny/yaml-profile/#readme",
   "keywords": [
     "oclif"
   ],
@@ -38,7 +38,7 @@
   "oclif": {
     "bin": "yprofile"
   },
-  "repository": "holytiny/yaml-profile",
+  "repository": "https://github.com/holytiny/yaml-profile.git",
   "scripts": {
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
