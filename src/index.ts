@@ -1,28 +1,42 @@
 import {Command, flags} from '@oclif/command'
 
 class Yprofile extends Command {
-  static description = 'describe the command here'
+  static description = "Generate yaml file from yaml file with profiles";
+
+  // static usage = `'input file' --profile='profile in inputfile' [--out='output file]' `;
 
   static flags = {
     // add --version flag to show CLI version
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: flags.boolean({char: 'f'}),
-  }
+    version: flags.version({ char: "v" }),
+    help: flags.help({ char: "h" }),
+    profile: flags.string({
+      char: "p",
+      description:
+        "profile of the in block profiles to use to generate the yaml file",
+      multiple: false,
+      required: true,
+    }),
+    output: flags.string({
+      char: "o",
+      description:
+        "the output file path. Default to the same path as input file and suffix with .out",
+    }),
+  };
 
-  static args = [{name: 'file'}]
+  static args = [
+    {
+      name: "input-file",
+      required: true,
+      description: "input yaml file with profiles in block",
+    },
+  ];
 
   async run() {
-    const {args, flags} = this.parse(Yprofile)
+    const { args, flags } = this.parse(Yprofile);
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from ./src/index.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
-    }
+    let workingPath = process.cwd();
+    console.log('workingPath', workingPath);
+    this._help();
   }
 }
 

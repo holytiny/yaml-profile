@@ -1,0 +1,9 @@
+version: v1beta9
+arrays:
+- name: array1
+  content: sake
+profiles:
+- name: dev
+  patches:
+  - op: replace
+    path: arrays.name=array1.content
