@@ -13,6 +13,8 @@ profiles:
     value: sakeTest
   - op: remove
     path: arrays.name=array1.removed
+  - op: remove
+    path: arrays.name=array1.containers.image=john/debugger
   - op: add
     path: arrays.name=array1.addContent
     value: added

@@ -3,6 +3,12 @@ import { ReturnCode } from './return-code';
 import * as fs from 'fs';
 import * as YAML from 'yaml';
 
+interface Selected {
+  item: any,
+  isParentArray: boolean,
+  parentItem: any,
+  selector: string
+}
 
 class Yprofile extends Command {
   static description =
@@ -43,9 +49,9 @@ class Yprofile extends Command {
     const profile = this.getProfile(args.profile, profiles);
     const genYaml = this.generate(yaml, profile);
 
-    let workingPath = process.cwd();
-    console.log('workingPath', workingPath);
-    this._help();
+    // let workingPath = process.cwd();
+    // console.log('workingPath', workingPath);
+    // this._help();
   }
 
   getYaml(inputFilePath: string) {
@@ -118,12 +124,100 @@ class Yprofile extends Command {
     for (let patch of patches) {
       this.applyPatch(yaml, patch);
     }
+    console.log(yaml);
   }
 
-  applyPatch(yaml: any, patch: any) {
-    
+  // applyPatch(yaml: any, patch: any) {
+  //   const steps = patch.path.split('.');
+  //   // find element to modify.
+  //   let elem = yaml;
+  //   let elemParent = yaml;
+  //   let key = null;
+  //   for (let i = 0; i < steps.length; ++i) {
+  //     const step = steps[i];
+  //     if (step.includes('=')) {
+  //       const kv = step.split('=');
+  //       const k = kv[0];
+  //       const v = kv[1];
+  //       elemParent = elem;
+  //       elem = elem.find((e: any) => {
+  //         const value = e[`${k}`];
+  //         if (value === v) {
+  //           key = k;
+  //           return true;
+  //         } else {
+  //           return false;
+  //         }
+  //       });
+  //     } else {
+  //       key = step;
+  //       elemParent = elem;
+  //       elem = elem[`${step}`];
+  //     }
+  //   }
+  //   const item = {
+  //     elem: elemParent,
+  //     key
+  //   }
+  //   if (patch.op === 'remove') {
+  //     this.remove(item);
+  //   } else if (patch.op === 'replace') {
+  //     this.replace(item, patch.value);
+  //   }
+  //   const itemOp = item.elem[`${item.key}`];
+  //   if (Array.isArray(itemOp)) {
+  //     console.log(itemOp);
+  //   }
+  // }
+
+  applyPatch(yaml: any, patch: any) {    
+    const selected = this.getSelected(yaml, patch);
+    this.execOp(selected, patch.op);
   }
 
+  getSelected(yaml: any, patch: any) {
+    const selected: Selected = {
+      item: yaml,
+      isParentArray: Array.isArray(yaml),
+      parentItem: yaml,
+      selector: ''
+    };
+    // console.log(selected);
+    const selectors = patch.path.split('.');
+    for (let selector of selectors) {
+      selected.parentItem = selected.item;
+      selected.selector = selector;
+      if (selector.includes('=')) {        
+        selected.isParentArray = true;        
+        const kv = selector.split('=');
+        const k = kv[0];
+        const v = kv[1];
+        selected.item = selected.item.find((e: any) => {
+          const value = e[`${k}`];
+          return v === value;
+        });
+      } else {
+        selected.isParentArray = false;
+        selected.item = selected.item[`${selector}`];
+      }
+    }
+    return selected;
+  }
+
+  execOp(selected: Selected, op: string) {
+    if ('remove' === op) {
+      this.remove(selected);
+    }
+  }
+
+  remove(selected: Selected) {
+    if (selected.isParentArray) {
+      const index = selected.parentItem.indexOf(selected.item);
+      selected.parentItem.splice(index, 1);
+    } else {
+      delete selected.parentItem[`${selected.selector}`];
+    }
+  }
 }
 
 export = Yprofile;
