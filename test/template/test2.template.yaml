@@ -1,8 +1,21 @@
 arrays:
 - name: array1
   content: sake
+  removed: foo
+  containers:
+  - image: john/devbackend
+  - image: john/debugger
 profiles:
 - name: dev
   patches:
   - op: replace
     path: arrays.name=array1.content
+    value: sakeTest
+  - op: remove
+    path: arrays.name=array1.removed
+  - op: add
+    path: arrays.name=array1.addContent
+    value: added
+  - op: add
+    path: arrays.name=array1.containers
+    value: sake/test

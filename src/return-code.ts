@@ -1,4 +1,9 @@
 export enum ReturnCode {
     OK,
-    NoProfile
+    NoProfile,
+    NoPatches,
+    NoOp,
+    WrongOp,
+    NoPath,
+    NoValue
 }

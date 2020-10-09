@@ -37,17 +37,22 @@ class Yprofile extends Command {
   async run() {
     const { args, flags } = this.parse(Yprofile);
 
-    const { yaml, profiles } = this.inputYaml(args.input_file);
-    this.checkProfile(args.profile, profiles);
+    const { yaml, profiles } = this.getYaml(args.input_file);
+    this.checkProfiles(profiles);
 
-    // let workingPath = process.cwd();
-    // console.log('workingPath', workingPath);
-    // this._help();
+    const profile = this.getProfile(args.profile, profiles);
+    const genYaml = this.generate(yaml, profile);
+
+    let workingPath = process.cwd();
+    console.log('workingPath', workingPath);
+    this._help();
   }
 
-  inputYaml(inputFilePath: string) {
+  getYaml(inputFilePath: string) {
     const inputFile = fs.readFileSync(inputFilePath, 'utf8');
     const yaml = YAML.parse(inputFile);
+    // console.log(yaml);
+    
     const profiles = yaml.profiles;
     delete yaml.profiles;
     return {
@@ -56,7 +61,48 @@ class Yprofile extends Command {
     };
   }
 
-  checkProfile(profileName: string, profiles: any) {
+  checkProfiles(profiles: any) {
+    // console.log(profiles);
+    for (let profile of profiles) {
+      if (!profile.hasOwnProperty('patches')) {
+        this.error('there is no patches section in profile, please define patches section!', {exit: ReturnCode.NoPatches});
+      }
+      const patches = profile.patches;
+      const opType = ['replace', 'remove', 'add'];
+      for (let patch of patches) {
+        if (!patch.hasOwnProperty('op')) {
+          this.error(
+            `there is no op in ${patch}, please define op of the patch!`,
+             {exit: ReturnCode.NoOp}
+          );
+        }
+        if (!opType.includes(patch.op)) {
+          this.error(
+            `op must be defined as replace, remove or add, please checke ${patch.op}`, 
+            {exit: ReturnCode.WrongOp}
+          );
+        }
+        if (!patch.hasOwnProperty('path')) {
+          this.error(
+            `there is no path in ${patch}, please define path of the patch!`, 
+            {exit: ReturnCode.NoPath}
+          );
+        }
+
+        if (patch.op === 'add') {
+          if (!patch.hasOwnProperty('value')) {
+            this.error(
+              `there is no value in ${patch} for op to add, please define value for the patch!`, 
+              {exit: ReturnCode.NoValue}
+            );
+          }
+        }
+      }      
+    }
+    
+  }
+
+  getProfile(profileName: string, profiles: any) {
     const res = profiles.find((element: {name?: string}) => {
       const name = element['name'];
       return name === profileName;
@@ -64,7 +110,20 @@ class Yprofile extends Command {
     if (res === undefined) {
       this.error(`there is no ${profileName} in profiles section of the input file!`, {exit: ReturnCode.NoProfile});
     }
+    return res;
   }
+
+  generate(yaml: any, profile: any) {
+    const patches = profile.patches;
+    for (let patch of patches) {
+      this.applyPatch(yaml, patch);
+    }
+  }
+
+  applyPatch(yaml: any, patch: any) {
+    
+  }
+
 }
 
 export = Yprofile;
