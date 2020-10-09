@@ -1,4 +1,3 @@
-version: v1beta9
 arrays:
 - name: array1
   content: sake
