@@ -127,52 +127,9 @@ class Yprofile extends Command {
     console.log(yaml);
   }
 
-  // applyPatch(yaml: any, patch: any) {
-  //   const steps = patch.path.split('.');
-  //   // find element to modify.
-  //   let elem = yaml;
-  //   let elemParent = yaml;
-  //   let key = null;
-  //   for (let i = 0; i < steps.length; ++i) {
-  //     const step = steps[i];
-  //     if (step.includes('=')) {
-  //       const kv = step.split('=');
-  //       const k = kv[0];
-  //       const v = kv[1];
-  //       elemParent = elem;
-  //       elem = elem.find((e: any) => {
-  //         const value = e[`${k}`];
-  //         if (value === v) {
-  //           key = k;
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  //     } else {
-  //       key = step;
-  //       elemParent = elem;
-  //       elem = elem[`${step}`];
-  //     }
-  //   }
-  //   const item = {
-  //     elem: elemParent,
-  //     key
-  //   }
-  //   if (patch.op === 'remove') {
-  //     this.remove(item);
-  //   } else if (patch.op === 'replace') {
-  //     this.replace(item, patch.value);
-  //   }
-  //   const itemOp = item.elem[`${item.key}`];
-  //   if (Array.isArray(itemOp)) {
-  //     console.log(itemOp);
-  //   }
-  // }
-
   applyPatch(yaml: any, patch: any) {    
     const selected = this.getSelected(yaml, patch);
-    this.execOp(selected, patch.op);
+    this.execOp(selected, patch);
   }
 
   getSelected(yaml: any, patch: any) {
@@ -204,9 +161,12 @@ class Yprofile extends Command {
     return selected;
   }
 
-  execOp(selected: Selected, op: string) {
+  execOp(selected: Selected, patch: any) {
+    const op = patch.op;
     if ('remove' === op) {
       this.remove(selected);
+    } else if ('replace' === op) {
+      this.replace(selected, patch.value);
     }
   }
 
@@ -216,6 +176,15 @@ class Yprofile extends Command {
       selected.parentItem.splice(index, 1);
     } else {
       delete selected.parentItem[`${selected.selector}`];
+    }
+  }
+
+  replace(selected: Selected, value: any) {
+    if (selected.isParentArray) {
+      const index = selected.parentItem.indexOf(selected.item);
+      selected.parentItem[index] = value;
+    } else {
+      selected.parentItem[`${selected.selector}`] = value;
     }
   }
 }

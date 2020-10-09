@@ -11,6 +11,9 @@ profiles:
   - op: replace
     path: arrays.name=array1.content
     value: sakeTest
+  - op: replace
+    path: arrays.name=array1.containers.image=john/devbackend
+    value: john/backend
   - op: remove
     path: arrays.name=array1.removed
   - op: remove
