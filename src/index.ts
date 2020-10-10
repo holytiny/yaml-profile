@@ -167,6 +167,21 @@ class Yprofile extends Command {
       this.remove(selected);
     } else if ('replace' === op) {
       this.replace(selected, patch.value);
+    } else if ('add' === op) {
+      this.add(selected, patch.value);
+    }
+  }
+
+  add(selected: Selected, value: any) {
+    if (Array.isArray(selected.item)) {
+      selected.item.push(value);
+    } else {
+      if (selected.parentItem[`${selected.selector}`]) {
+        this.error(`the property ${selected.selector} you want to add has already existed!`,
+          {exit: ReturnCode.AddPropertyExisted}
+        );
+      }
+      selected.parentItem[`${selected.selector}`] = value;
     }
   }
 

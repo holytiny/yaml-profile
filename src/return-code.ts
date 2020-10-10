@@ -5,5 +5,6 @@ export enum ReturnCode {
     NoOp,
     WrongOp,
     NoPath,
-    NoValue
+    NoValue,
+    AddPropertyExisted
 }
