@@ -2,6 +2,7 @@ import { Command, flags } from '@oclif/command';
 import { ReturnCode } from './return-code';
 import * as fs from 'fs';
 import * as YAML from 'yaml';
+import { isYamlSame } from './util';
 
 interface Selected {
   item: any,
@@ -25,6 +26,11 @@ class Yprofile extends Command {
       description:
         'the output file path. Default to the same path as input file and suffix with .out',
     }),
+    force: flags.boolean({
+      char: 'f',
+      default: false,
+      description: 'generate the yaml file to output file regardless whether a file has already existed'
+    })
   };
 
   static args = [
@@ -47,7 +53,7 @@ class Yprofile extends Command {
     this.checkProfiles(profiles);
 
     const profile = this.getProfile(args.profile, profiles);
-    const genYaml = this.generate(yaml, profile);
+    const genYaml = this.generate(yaml, profile, args.input_file, flags.output, flags.force);
 
     // let workingPath = process.cwd();
     // console.log('workingPath', workingPath);
@@ -119,12 +125,38 @@ class Yprofile extends Command {
     return res;
   }
 
-  generate(yaml: any, profile: any) {
+  generate(yaml: any, profile: any, input: string, output: string | undefined, force: boolean) {
     const patches = profile.patches;
     for (let patch of patches) {
       this.applyPatch(yaml, patch);
     }
-    console.log(yaml);
+    // console.log(yaml);
+    const outputFilePath = output ? output: input + '.out';
+    const yamlStr = YAML.stringify(yaml, {indentSeq: false});
+    if (force) {
+      this.genFile(yamlStr, outputFilePath);
+      return;
+    }
+    if (!fs.existsSync(outputFilePath)) {
+      this.genFile(yamlStr, outputFilePath);
+    } else {
+      const outputFile = fs.readFileSync(outputFilePath, 'utf8');
+      const yaml2 = YAML.parse(outputFile);
+      const yaml2Str = YAML.stringify(yaml2, {indentSeq: false});
+      if (isYamlSame(yamlStr, yaml2Str)) {
+        this.log('The output file has already exsited and it is the same as the file generated. So file output is skipped. ',
+        'If whatever you still want to write the file, please use -f flag');
+        return;
+      } else {
+        this.log('The output file has already exsited and it is NOT the same as the file generated. ',
+        'So output yaml is WRITTEN TO THAT FILE. ');
+        this.genFile(yamlStr, outputFilePath);
+      }
+    }
+  }
+
+  genFile(yaml: string, output: string) {
+    fs.writeFileSync(output, yaml);
   }
 
   applyPatch(yaml: any, patch: any) {    
