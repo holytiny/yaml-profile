@@ -67,9 +67,9 @@ class Yprofile extends Command {
 
     const profiles = yaml.profiles
     if (!profiles) {
-      this.error(`there is no profiles section of the input file!`, {exit: ReturnCode.NoProfilesSection})
+      this.error('there is no profiles section of the input file!', {exit: ReturnCode.NoProfilesSection})
     }
-    
+
     delete yaml.profiles
     return {
       yaml,
