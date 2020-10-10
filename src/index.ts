@@ -157,6 +157,7 @@ class Yprofile extends Command {
 
   genFile(yaml: string, output: string) {
     fs.writeFileSync(output, yaml);
+    this.log(`The file ${output} is generated!`);
   }
 
   applyPatch(yaml: any, patch: any) {    
