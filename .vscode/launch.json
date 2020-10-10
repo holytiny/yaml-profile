@@ -13,8 +13,8 @@
             ],
             "program": "${workspaceFolder}/bin/run",
             "args":[
-                "${workspaceFolder}/test/template/test2.template.yaml",
-                "dev"
+                "${workspaceFolder}/test/templates/test.template.yaml",
+                "staging"
             ]
         }
     ]

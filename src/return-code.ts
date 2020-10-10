@@ -1,5 +1,6 @@
 export enum ReturnCode {
     OK,
+    NoProfilesSection,
     NoProfile,
     NoPatches,
     NoOp,
