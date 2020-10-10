@@ -154,3 +154,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# yprofile generated file
+*.out
+
