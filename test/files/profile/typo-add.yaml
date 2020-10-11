@@ -1,0 +1,20 @@
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+- name: backend
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: john/devbackend
+      - image: john/debugger
+profiles:
+- name: production
+  patches:
+  - op: adds
+    path: deployments.name=backend.helm.values.containers
+    value:
+      image: john/cache

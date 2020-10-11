@@ -38,7 +38,17 @@ describe('yprofile.getYaml', () => {
   .it(`should exit with code ${ReturnCode.ProfilePatchNoOp} when no op defined`)
 
   test
-  .do(() => cmd.run(['test/files/profile/replace-mistake.yaml', 'staging']))
+  .do(() => cmd.run(['test/files/profile/typo-replace.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchWrongOp)
-  .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op value`)
+  .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op replace value`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/typo-remove.yaml', 'staging']))
+  .exit(ReturnCode.ProfilePatchWrongOp)
+  .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op add value`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/typo-add.yaml', 'production']))
+  .exit(ReturnCode.ProfilePatchWrongOp)
+  .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op add value`)
 })
