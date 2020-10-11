@@ -4,19 +4,6 @@ import {ReturnCode} from '../src/return-code'
 import cmd = require('../src')
 
 describe('yprofile profile', () => {
-  // test
-  // .stdout()
-  // .do(() => cmd.run([]))
-  // .it('runs hello', ctx => {
-  //   expect(ctx.stdout).to.contain('hello world')
-  // })
-
-  // test
-  // .stdout()
-  // .do(() => cmd.run(['--name', 'jeff']))
-  // .it('runs hello --name jeff', ctx => {
-  //   expect(ctx.stdout).to.contain('hello jeff')
-  // })
   test
   .do(() => cmd.run(['test/files/profile/no-profiles.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoProfilesSection)
@@ -66,4 +53,24 @@ describe('yprofile profile', () => {
   .do(() => cmd.run(['test/files/profile/add-no-value.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchAddOrReplaceNoValue)
   .it(`should exit with code ${ReturnCode.ProfilePatchAddOrReplaceNoValue} when no value to add`)
+})
+
+describe('yprofile op', () => {
+  // test
+  // .stdout()
+  // .do(() => cmd.run([]))
+  // .it('runs hello', ctx => {
+  //   expect(ctx.stdout).to.contain('hello world')
+  // })
+
+  // test
+  // .stdout()
+  // .do(() => cmd.run(['--name', 'jeff']))
+  // .it('runs hello --name jeff', ctx => {
+  //   expect(ctx.stdout).to.contain('hello jeff')
+  // })
+  test
+  .do(() => cmd.run(['test/files/op/add-property-exist.yaml', 'production']))
+  .exit(ReturnCode.ProfilePatchAddPropertyExisted)
+  .it(`should exit with code ${ReturnCode.ProfilePatchAddPropertyExisted} when property already existed during add op`)
 })

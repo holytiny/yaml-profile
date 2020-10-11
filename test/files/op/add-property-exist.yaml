@@ -14,12 +14,7 @@ deployments:
 profiles:
 - name: production
   patches:
-  - op: replace
-    path: images.backend.image
-    value: john/prodbackend
-  - op: remove
-    path: deployments.name=backend.helm.values.containers[1]
   - op: add
-    path: deployments.name=backend.helm.values.containers
+    path: images.backend-debugger
     value:
-      image: john/cache
+      image: john/debugger
