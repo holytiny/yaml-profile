@@ -18,12 +18,17 @@ describe('yprofile.getYaml', () => {
   //   expect(ctx.stdout).to.contain('hello jeff')
   // })
   test
-  .it(`should exit with code ${ReturnCode.NoProfilesSection}`, () => {
+  .it(`should exit with code ${ReturnCode.ProfileNoProfilesSection} when no profiles section`, () => {
     // cmd.getYaml('test/files/profile/no-profiles.yaml')
   })
 
   test
-  .do(() => cmd.run(['test/files/profile/no-profiles.yaml', 'staging']))
-  .exit(ReturnCode.NoProfilesSection)
-  .it(`should exit with code ${ReturnCode.NoProfilesSection}`)
+  .do(() => cmd.run(['test/files/profile/no-name.yaml', 'staging']))
+  .exit(ReturnCode.ProfileNoName)
+  .it(`should exit with code ${ReturnCode.ProfileNoName} when no name in patch`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/no-patches.yaml', 'staging']))
+  .exit(ReturnCode.ProfileNoPatches)
+  .it(`should exit with code ${ReturnCode.ProfileNoPatches} when no patches section`)
 })

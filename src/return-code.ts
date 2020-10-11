@@ -1,11 +1,12 @@
 export enum ReturnCode {
     OK,
-    NoProfilesSection,
-    NoProfile,
-    NoPatches,
-    NoOp,
-    WrongOp,
-    NoPath,
-    NoValue,
-    AddPropertyExisted
+    ProfileNoProfilesSection,
+    ProfileNoName,
+    ProfileNoProfile,
+    ProfileNoPatches,
+    ProfilePatchNoOp,
+    ProfilePatchWrongOp,
+    ProfilePatchNoPath,
+    ProfilePatchAddOrReplaceNoValue,
+    ProfilePatchAddPropertyExisted
 }

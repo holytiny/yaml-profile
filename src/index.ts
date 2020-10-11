@@ -67,7 +67,7 @@ class Yprofile extends Command {
 
     const profiles = yaml.profiles
     if (!profiles) {
-      this.error('there is no profiles section of the input file!', {exit: ReturnCode.NoProfilesSection})
+      this.error('there is no profiles section of the input file!', {exit: ReturnCode.ProfileNoProfilesSection})
     }
 
     delete yaml.profiles
@@ -80,28 +80,35 @@ class Yprofile extends Command {
   checkProfiles(profiles: any) {
     // console.log(profiles);
     for (const profile of profiles) {
+      if (!Object.prototype.hasOwnProperty.call(profile, 'name')) {
+        this.error('there is no name property in profile, please define name property!', {exit: ReturnCode.ProfileNoName})
+      }
       if (!Object.prototype.hasOwnProperty.call(profile, 'patches')) {
-        this.error('there is no patches section in profile, please define patches section!', {exit: ReturnCode.NoPatches})
+        this.error('there is no patches section in profile, please define patches section!', {exit: ReturnCode.ProfileNoPatches})
       }
       const patches = profile.patches
+      if (patches.length === 0) {
+        this.log(`there is no patch in patches in profile ${profile}, skip...`)
+        return;
+      }
       const opType = ['replace', 'remove', 'add']
       for (const patch of patches) {
         if (!Object.prototype.hasOwnProperty.call(patch, 'op')) {
           this.error(
             `there is no op in ${patch}, please define op of the patch!`,
-            {exit: ReturnCode.NoOp}
+            {exit: ReturnCode.ProfilePatchNoOp}
           )
         }
         if (!opType.includes(patch.op)) {
           this.error(
             `op must be defined as replace, remove or add, please checke ${patch.op}`,
-            {exit: ReturnCode.WrongOp}
+            {exit: ReturnCode.ProfilePatchWrongOp}
           )
         }
         if (!Object.prototype.hasOwnProperty.call(patch, 'path')) {
           this.error(
             `there is no path in ${patch}, please define path of the patch!`,
-            {exit: ReturnCode.NoPath}
+            {exit: ReturnCode.ProfilePatchNoPath}
           )
         }
 
@@ -109,7 +116,7 @@ class Yprofile extends Command {
           if (!Object.prototype.hasOwnProperty.call(patch, 'value')) {
             this.error(
               `there is no value in ${patch} for op to add, please define value for the patch!`,
-              {exit: ReturnCode.NoValue}
+              {exit: ReturnCode.ProfilePatchAddOrReplaceNoValue}
             )
           }
         }
@@ -123,7 +130,7 @@ class Yprofile extends Command {
       return name === profileName
     })
     if (res === undefined) {
-      this.error(`there is no ${profileName} in profiles section of the input file!`, {exit: ReturnCode.NoProfile})
+      this.error(`there is no ${profileName} in profiles section of the input file!`, {exit: ReturnCode.ProfileNoProfile})
     }
     return res
   }
@@ -216,7 +223,7 @@ class Yprofile extends Command {
     } else {
       if (selected.parentItem[`${selected.selector}`]) {
         this.error(`the property ${selected.selector} you want to add has already existed!`,
-          {exit: ReturnCode.AddPropertyExisted}
+          {exit: ReturnCode.ProfilePatchAddPropertyExisted}
         )
       }
       selected.parentItem[`${selected.selector}`] = value
