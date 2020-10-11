@@ -1,5 +1,8 @@
 import {expect, test} from '@oclif/test'
 import {ReturnCode} from '../src/return-code'
+import * as YAML from 'yaml'
+import {isYamlSame} from '../src/util'
+import * as fs from 'fs'
 
 import cmd = require('../src')
 
@@ -73,4 +76,22 @@ describe('yprofile op', () => {
   .do(() => cmd.run(['test/files/op/add-property-exist.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchAddPropertyExisted)
   .it(`should exit with code ${ReturnCode.ProfilePatchAddPropertyExisted} when property already existed during add op`)
+
+  test
+  .do(() => cmd.run([
+    'test/files/op/remove-property-array-index.yaml',
+    'staging',
+    '--output=test/dist/op/remove-property-array-index-res.yaml',
+  ]))
+  .it('should remove the property using array index style', () => {
+    const yamlFile = fs.readFileSync('test/files/op/remove-property-array-index-res.yaml', 'utf8')
+    const yaml = YAML.parse(yamlFile)
+    const yamlStr = YAML.stringify(yaml, {indentSeq: false})
+
+    const yamlSameFile = fs.readFileSync('test/dist/op/remove-property-array-index-res.yaml', 'utf8')
+    const yamlSame = YAML.parse(yamlSameFile)
+    const yamlSameStr = YAML.stringify(yamlSame, {indentSeq: false})
+    const ret = isYamlSame(yamlStr, yamlSameStr)
+    expect(ret).to.equal(true)
+  })
 })

@@ -1,8 +1,12 @@
-import {Command, flags} from '@oclif/command'
-import {ReturnCode} from './return-code'
+
 import * as fs from 'fs'
 import * as YAML from 'yaml'
+import * as path from 'path'
+
+import {Command, flags} from '@oclif/command'
+import {ReturnCode} from './return-code'
 import {isYamlSame} from './util'
+import {ArrayPaser} from './util'
 
 interface Selected {
   item: any;
@@ -177,6 +181,10 @@ class Yprofile extends Command {
   }
 
   genFile(yaml: string, output: string) {
+    const dirName = path.dirname(output)
+    if (!fs.existsSync(dirName)) {
+      fs.mkdirSync(dirName, {recursive: true})
+    }
     fs.writeFileSync(output, yaml)
     this.log(`The file ${output} is generated!`)
   }
@@ -207,6 +215,19 @@ class Yprofile extends Command {
           const value = e[`${k}`]
           return v === value
         })
+      } else if (selector.includes('[')) {
+        // values.container[1] is equal to
+        // (values.container)[1], so,
+        // selected.parentItem = selected.item.container
+        // selected.item = selected.parentItem[1]
+        const arrayParser = new ArrayPaser(selector)
+        arrayParser.parse()
+        const name = arrayParser.name
+        const index = arrayParser.index
+        selected.parentItem = selected.item[`${name}`]
+        selected.item = selected.parentItem[`${index}`]
+        selected.isParentArray = true
+        selected.selector = index
       } else {
         selected.isParentArray = false
         selected.item = selected.item[`${selector}`]
