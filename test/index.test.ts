@@ -36,4 +36,9 @@ describe('yprofile.getYaml', () => {
   .do(() => cmd.run(['test/files/profile/no-op.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchNoOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchNoOp} when no op defined`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/replace-mistake.yaml', 'staging']))
+  .exit(ReturnCode.ProfilePatchWrongOp)
+  .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op value`)
 })
