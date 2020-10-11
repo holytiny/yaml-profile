@@ -5,7 +5,7 @@ import * as fs from 'fs'
 
 describe('isYamlSame', () => {
   test
-  .it('should return true', () => {
+  .it('should return true when tow yaml files are the same', () => {
     const yamlFile = fs.readFileSync('./test/files/util/yaml.yaml', 'utf8')
     const yaml = YAML.parse(yamlFile)
     const yamlStr = YAML.stringify(yaml, {indentSeq: false})
@@ -18,7 +18,7 @@ describe('isYamlSame', () => {
   })
 
   test
-  .it('should return false', () => {
+  .it('should return false when tow yaml files are different', () => {
     const yamlFile = fs.readFileSync('./test/files/util/yaml.yaml', 'utf8')
     const yaml = YAML.parse(yamlFile)
     const yamlStr = YAML.stringify(yaml, {indentSeq: false})
