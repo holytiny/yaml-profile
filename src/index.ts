@@ -89,13 +89,13 @@ class Yprofile extends Command {
       const patches = profile.patches
       if (patches.length === 0) {
         this.log(`there is no patch in patches in profile ${profile}, skip...`)
-        return;
+        return
       }
       const opType = ['replace', 'remove', 'add']
       for (const patch of patches) {
         if (!Object.prototype.hasOwnProperty.call(patch, 'op')) {
           this.error(
-            `there is no op in ${patch}, please define op of the patch!`,
+            `there is no op in ${patch}, please define 'op' key of either 'replace', 'remove' or 'add' value of the patch!`,
             {exit: ReturnCode.ProfilePatchNoOp}
           )
         }

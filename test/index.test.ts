@@ -31,4 +31,9 @@ describe('yprofile.getYaml', () => {
   .do(() => cmd.run(['test/files/profile/no-patches.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoPatches)
   .it(`should exit with code ${ReturnCode.ProfileNoPatches} when no patches section`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/no-op.yaml', 'staging']))
+  .exit(ReturnCode.ProfilePatchNoOp)
+  .it(`should exit with code ${ReturnCode.ProfilePatchNoOp} when no op defined`)
 })
