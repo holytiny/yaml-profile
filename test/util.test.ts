@@ -2,7 +2,7 @@ import {expect, test} from '@oclif/test'
 import * as YAML from 'yaml'
 import {isYamlSame} from '../src/util'
 import * as fs from 'fs'
-import {ArrayPaser} from '../src/util'
+import {ArrayParser} from '../src/util'
 
 describe('isYamlSame', () => {
   test
@@ -32,10 +32,10 @@ describe('isYamlSame', () => {
   })
 })
 
-describe('ArrayPaser', () => {
+describe('ArrayParser', () => {
   test
   .it('parse container[1] should return name==container and index==1', () => {
-    const arrayParser = new ArrayPaser('container[1]')
+    const arrayParser = new ArrayParser('container[1]')
     arrayParser.parse()
     const name = arrayParser.name
     const index = arrayParser.index

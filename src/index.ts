@@ -6,7 +6,7 @@ import * as path from 'path'
 import {Command, flags} from '@oclif/command'
 import {ReturnCode} from './return-code'
 import {isYamlSame} from './util'
-import {ArrayPaser} from './util'
+import {ArrayParser} from './util'
 
 interface Selected {
   item: any;
@@ -220,7 +220,7 @@ class Yprofile extends Command {
         // (values.container)[1], so,
         // selected.parentItem = selected.item.container
         // selected.item = selected.parentItem[1]
-        const arrayParser = new ArrayPaser(selector)
+        const arrayParser = new ArrayParser(selector)
         arrayParser.parse()
         const name = arrayParser.name
         const index = arrayParser.index

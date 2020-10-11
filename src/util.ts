@@ -4,12 +4,12 @@ export function isYamlSame(yaml1: string, yaml2: string): boolean {
   return Md5.hashStr(yaml1) === Md5.hashStr(yaml2)
 }
 
-enum ArrayPaserState {
+enum ArrayParserState {
   ParseArrayName,
   ParseArrayIndex
 }
-export class ArrayPaser {
-  state: ArrayPaserState
+export class ArrayParser {
+  state: ArrayParserState
 
   private name_ = ''
 
@@ -18,7 +18,7 @@ export class ArrayPaser {
   readonly length: number
 
   constructor(readonly content: string) {
-    this.state = ArrayPaserState.ParseArrayName
+    this.state = ArrayParserState.ParseArrayName
     this.length = content.length
   }
 
@@ -35,16 +35,16 @@ export class ArrayPaser {
     for (let i = 0; i < this.length; ++i) {
       const c = this.content.charAt(i)
       if (c === '[') {
-        this.state = ArrayPaserState.ParseArrayIndex
+        this.state = ArrayParserState.ParseArrayIndex
         continue
       } else if (c === ']') {
         return
       }
-      if (this.state === ArrayPaserState.ParseArrayName) {
+      if (this.state === ArrayParserState.ParseArrayName) {
         if (c === '$' || c === '_' || c.match(isAlphanumeric)) {
           this.name_ += c
         }
-      } else if (this.state === ArrayPaserState.ParseArrayIndex) {
+      } else if (this.state === ArrayParserState.ParseArrayIndex) {
         if (c.match(isAlphanumeric))
           this.index_ += c
       }
