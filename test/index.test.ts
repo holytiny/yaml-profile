@@ -3,7 +3,7 @@ import {ReturnCode} from '../src/return-code'
 
 import cmd = require('../src')
 
-describe('yprofile.getYaml', () => {
+describe('yprofile profile', () => {
   // test
   // .stdout()
   // .do(() => cmd.run([]))
@@ -18,14 +18,19 @@ describe('yprofile.getYaml', () => {
   //   expect(ctx.stdout).to.contain('hello jeff')
   // })
   test
-  .it(`should exit with code ${ReturnCode.ProfileNoProfilesSection} when no profiles section`, () => {
-    // cmd.getYaml('test/files/profile/no-profiles.yaml')
-  })
+  .do(() => cmd.run(['test/files/profile/no-profiles.yaml', 'staging']))
+  .exit(ReturnCode.ProfileNoProfilesSection)
+  .it(`should exit with code ${ReturnCode.ProfileNoProfilesSection} when no profiles section`)
 
   test
   .do(() => cmd.run(['test/files/profile/no-name.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoName)
   .it(`should exit with code ${ReturnCode.ProfileNoName} when no name in patch`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/no-profile.yaml', 'dev']))
+  .exit(ReturnCode.ProfileNoProfile)
+  .it(`should exit with code ${ReturnCode.ProfileNoProfile} when no profile according to the PROFILE arg`)
 
   test
   .do(() => cmd.run(['test/files/profile/no-patches.yaml', 'staging']))
@@ -51,4 +56,14 @@ describe('yprofile.getYaml', () => {
   .do(() => cmd.run(['test/files/profile/typo-add.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchWrongOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op add value`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/no-path.yaml', 'staging']))
+  .exit(ReturnCode.ProfilePatchNoPath)
+  .it(`should exit with code ${ReturnCode.ProfilePatchNoPath} when no path in patch`)
+
+  test
+  .do(() => cmd.run(['test/files/profile/add-no-value.yaml', 'production']))
+  .exit(ReturnCode.ProfilePatchAddOrReplaceNoValue)
+  .it(`should exit with code ${ReturnCode.ProfilePatchAddOrReplaceNoValue} when no value to add`)
 })

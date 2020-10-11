@@ -120,6 +120,15 @@ class Yprofile extends Command {
             )
           }
         }
+
+        if (patch.op === 'replace') {
+          if (!Object.prototype.hasOwnProperty.call(patch, 'value')) {
+            this.error(
+              `there is no value in ${patch} for op to replace, please define value for the patch!`,
+              {exit: ReturnCode.ProfilePatchAddOrReplaceNoValue}
+            )
+          }
+        }
       }
     }
   }
