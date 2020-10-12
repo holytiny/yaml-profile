@@ -1,5 +1,4 @@
-yprofile
-========
+# yprofile
 
 A tool to generate yaml file use &#39;in-block&#39; profile.
 
@@ -9,11 +8,15 @@ A tool to generate yaml file use &#39;in-block&#39; profile.
 [![License](https://img.shields.io/npm/l/yprofile.svg)](https://github.com/https://github.com/holytiny/yaml-profile.git/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g yprofile
 $ yprofile COMMAND
@@ -25,8 +28,11 @@ USAGE
   $ yprofile COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
 
 <!-- commandsstop -->
