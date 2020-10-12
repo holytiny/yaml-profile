@@ -32,6 +32,7 @@ export class ArrayParser {
 
   parse() {
     const isAlphanumeric = /^[a-z0-9]+$/i
+    const isNumeric = /^\d+$/
     for (let i = 0; i < this.length; ++i) {
       const c = this.content.charAt(i)
       if (c === '[') {
@@ -45,7 +46,7 @@ export class ArrayParser {
           this.name_ += c
         }
       } else if (this.state === ArrayParserState.ParseArrayIndex) {
-        if (c.match(isAlphanumeric))
+        if (c.match(isNumeric))
           this.index_ += c
       }
     }

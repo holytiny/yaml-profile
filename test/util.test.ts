@@ -34,12 +34,12 @@ describe('isYamlSame', () => {
 
 describe('ArrayParser', () => {
   test
-  .it('parse container[1] should return name==container and index==1', () => {
-    const arrayParser = new ArrayParser('container[1]')
+  .it('parse $container2_[11] should return name==container and index==1', () => {
+    const arrayParser = new ArrayParser('$container2_[11]')
     arrayParser.parse()
     const name = arrayParser.name
     const index = arrayParser.index
-    expect(name).to.equal('container')
-    expect(index).to.equal('1')
+    expect(name).to.equal('$container2_')
+    expect(index).to.equal('11')
   })
 })

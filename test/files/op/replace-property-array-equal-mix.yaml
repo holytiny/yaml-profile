@@ -1,0 +1,33 @@
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+- name: backend
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: john/devbackend
+      - image: john/devfrontend
+      - image: john/debugger
+profiles:
+- name: staging
+  patches:
+  - op: replace
+    path: images.backend.image
+    value: john/stagingbackend 
+  - op: replace
+    path: deployments[0].helm.values.containers[0]
+    value: 
+      image: john/backend
+  - op: replace
+    path: deployments.name=backend.helm.values.containers.image=john/devfrontend
+    value: 
+      image: john/frontend
+  - op: replace
+    path: deployments.name=backend.helm.values.containers[2]
+    value: 
+      image: john/deploy
+

@@ -105,4 +105,22 @@ describe('yprofile op', () => {
     const ret = isYamlSame(yamlStr, yamlSameStr)
     expect(ret).to.equal(true)
   })
+
+  test
+  .do(() => cmd.run([
+    'test/files/op/replace-property-array-equal-mix.yaml',
+    'staging',
+    '--output=test/dist/op/replace-property-array-equal-mix-res.yaml',
+  ]))
+  .it('should replace the property by all style', () => {
+    const yamlFile = fs.readFileSync('test/files/op/replace-property-res.yaml', 'utf8')
+    const yaml = YAML.parse(yamlFile)
+    const yamlStr = YAML.stringify(yaml, {indentSeq: false})
+
+    const yamlSameFile = fs.readFileSync('test/dist/op/replace-property-array-equal-mix-res.yaml', 'utf8')
+    const yamlSame = YAML.parse(yamlSameFile)
+    const yamlSameStr = YAML.stringify(yamlSame, {indentSeq: false})
+    const ret = isYamlSame(yamlStr, yamlSameStr)
+    expect(ret).to.equal(true)
+  })
 })
