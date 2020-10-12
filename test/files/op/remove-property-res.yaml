@@ -8,3 +8,4 @@ deployments:
     values:
       containers:
       - image: john/devbackend
+      - image: john/debugger

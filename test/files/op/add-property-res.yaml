@@ -3,6 +3,8 @@ images:
     image: john/devbackend
   backend-debugger:
     image: john/debugger
+  frontend:
+    image: john/frontend
 deployments:
 - name: backend
   helm:
@@ -11,10 +13,5 @@ deployments:
       containers:
       - image: john/devbackend
       - image: john/debugger
-profiles:
-- name: staging
-  patches:
-  - op: remove
-    path: deployments.name=backend.helm.values.containers.image=john/debugger
-  - op: remove
-    path: images.backend-debugger
+      - image: john/cache
+      - image: john/frontend
