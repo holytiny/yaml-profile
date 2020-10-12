@@ -16,3 +16,5 @@ profiles:
   patches:
   - op: remove
     path: deployments.name=backend.helm.values.containers.image=john/debugger
+  - op: remove
+    path: images.backend-debugger
