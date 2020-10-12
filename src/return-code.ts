@@ -8,5 +8,6 @@ export enum ReturnCode {
     ProfilePatchWrongOp,
     ProfilePatchNoPath,
     ProfilePatchAddOrReplaceNoValue,
-    ProfilePatchAddPropertyExisted
+    ProfilePatchAddPropertyExisted,
+    GenerateFileAlreadyExisted,
 }

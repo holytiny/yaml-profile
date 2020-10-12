@@ -1,0 +1,13 @@
+images:
+  backend:
+    image: john/prodbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+- name: backend
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: john/devbackend
+      - image: john/db

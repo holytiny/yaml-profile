@@ -93,7 +93,7 @@ class Yprofile extends Command {
       const patches = profile.patches
       if (patches.length === 0) {
         this.log(`there is no patch in patches in profile ${profile}, skip...`)
-        return
+        this.exit(ReturnCode.OK)
       }
       const opType = ['replace', 'remove', 'add']
       for (const patch of patches) {
@@ -173,9 +173,10 @@ class Yprofile extends Command {
         this.log('The output file has already exsited and it is the same as the file generated. So file output is skipped. ',
           'If whatever you still want to write the file, please use -f flag')
       } else {
-        this.log('The output file has already exsited and it is NOT the same as the file generated. ',
-          'So output yaml is WRITTEN TO THAT FILE. ')
-        this.genFile(yamlStr, outputFilePath)
+        this.error(
+          `The output file ${outputFilePath} has already exsited, the generated file WILL NOT BE OUTPUTED!`,
+          {exit: ReturnCode.GenerateFileAlreadyExisted}
+        )
       }
     }
   }
