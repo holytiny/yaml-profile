@@ -49,6 +49,7 @@
   },
   "repository": "https://github.com/holytiny/yaml-profile.git",
   "scripts": {
+    "start": "launch",
     "pretest": "rm -rf test/dist/*",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "posttest": "eslint . --ext .ts --config .eslintrc",
