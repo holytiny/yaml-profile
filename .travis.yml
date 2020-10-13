@@ -1,15 +1,21 @@
 language: node_js
 node_js:
-  - node
-
-# safelist
+- node
 branches:
   only:
   - main
-
 cache: npm
-
 script:
-  - ./bin/run --version
-  - ./bin/run --help
-  - npm run test
+- "./bin/run --version"
+- "./bin/run --help"
+- npm run test
+deploy:
+  provider: npm
+  email: enderson.pan@gmail.com
+  api_key:
+    secure: uxC9P75VlIpzXU7e552yY21k3EK5vZq86sRc2mgSpeTeUFeEalBVWFnY0Rp5prAELUeeau9IGLA/j+c61OJGVaGoj95GM0CHjyck+OFnh6lsiQ+j12CZc0Xixbd9I7MfswwBikXSFPnikgAsoyenNnZ/H0npuVUepHuSS04vHG/MfmiBB2m92OaF6esjKLFFbNEdTXVxKp6QZbvo3aAQ4ni33+kO8VR6kXQJdWik+W3n65lf/DTtjg+5IptoutLtZZ5MeJp3Fur8fKTzC2OlLv7QRws5Fk6DzfvjvvB8CLZZurKeFqdjMrEbemXvQukhg6XcXTu3+upYvnPdTgs+VB9rFwniNGkAE4eVPElEoR0JUfHbDBcrXkflMVJQXVbM0YjDvh/N1UHLdyib2tmMeSG8ZG7sxqW/ZowCbRZeszta8MzZNnlRWJTt8cqS54gUk9zFe7i5aoC1M9iRdSvY0+l6fRwfTxt4p9d9tZzriW1rxZJF40Gy4TRfS2p4SH3YdHC3YRzrYhqkLUywuum9aoEKG5f7yHR/PBOt9Od4xYLLAu+KPdUn6LfLw1C8lN71s6UGEjAKIr+LIXhs/yiSMnjGsJhSoZd/kauiqs3zCRVZ/oZSQNrFUWO+a+cr8m6T/XX4QXDRWrJF2Q0KtaeyrmgijoIbf7r+QZ/B6j2lH+Y=
+  on:
+    tags: true
+    branch: main
+    repo: holytiny/yaml-profile
+  skip_cleanup: 'true'
