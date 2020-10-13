@@ -48,7 +48,10 @@
   "oclif": {
     "bin": "yprofile"
   },
-  "repository": "https://github.com/holytiny/yaml-profile.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holytiny/yaml-profile.git"
+  },
   "scripts": {
     "start": "launch",
     "pretest": "rm -rf test/dist/*",
