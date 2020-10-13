@@ -1,5 +1,5 @@
 {
-  "name": "yprofile",
+  "name": "@holytiny/yprofile",
   "description": "A tool to generate yaml file use 'in-block' profile.",
   "version": "0.0.2-beta.2",
   "author": "sake",
