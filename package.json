@@ -1,7 +1,7 @@
 {
   "name": "yprofile",
   "description": "A tool to generate yaml file use 'in-block' profile.",
-  "version": "0.0.2-beta.1",
+  "version": "0.0.2-beta.2",
   "author": "sake",
   "bin": {
     "yprofile": "./bin/run"
