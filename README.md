@@ -21,7 +21,7 @@ $ npm install -g yprofile
 $ yprofile COMMAND
 running command...
 $ yprofile (-v|--version|version)
-yprofile/0.0.2-1 darwin-x64 node-v12.18.4
+yprofile/0.0.2-alpha.0 darwin-x64 node-v12.18.4
 $ yprofile --help [COMMAND]
 USAGE
   $ yprofile COMMAND
