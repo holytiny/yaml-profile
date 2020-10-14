@@ -8,28 +8,25 @@ A tool to generate yaml file use &#39;in-block&#39; profile.
 [![License](https://img.shields.io/npm/l/yprofile.svg)](https://github.com/holytiny/yaml-profile.git/blob/master/LICENSE)
 
 <!-- toc -->
-
-- [yprofile](#yprofile)
-- [Usage](#usage)
-- [Commands](#commands)
+* [yprofile](#yprofile)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @holytiny/yprofile
 $ yprofile COMMAND
 running command...
 $ yprofile (-v|--version|version)
-@holytiny/yprofile/0.0.2-beta.4 darwin-x64 node-v12.18.4
+@holytiny/yprofile/0.0.2-beta.5 darwin-x64 node-v12.18.4
 $ yprofile --help [COMMAND]
 USAGE
   $ yprofile COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 ## Commands basic
