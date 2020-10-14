@@ -137,12 +137,17 @@ describe('yprofile op', () => {
 
 describe('yprofile generate', () => {
   test
+  .stdout()
   .do(async () => {
-    fs.writeFileSync('test/files/generate/force-exist.yaml', 'exist')
+    const dirName = 'test/dist/generate/'
+    if (!fs.existsSync(dirName)) {
+      fs.mkdirSync(dirName, {recursive: true})
+    }
+    fs.writeFileSync('test/dist/generate/force-exist.yaml', 'exist')
     await cmd.run([
       'test/files/generate/test.yaml',
       'production',
-      '--output=test/files/generate/force-exist.yaml',
+      '--output=test/dist/generate/force-exist.yaml',
       '-f',
     ])
   })
@@ -151,7 +156,7 @@ describe('yprofile generate', () => {
     const yaml = YAML.parse(yamlFile)
     const yamlStr = YAML.stringify(yaml, {indentSeq: false})
 
-    const yamlSameFile = fs.readFileSync('test/files/generate/force-exist.yaml', 'utf8')
+    const yamlSameFile = fs.readFileSync('test/dist/generate/force-exist.yaml', 'utf8')
     const yamlSame = YAML.parse(yamlSameFile)
     const yamlSameStr = YAML.stringify(yamlSame, {indentSeq: false})
     const ret = isYamlSame(yamlStr, yamlSameStr)

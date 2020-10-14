@@ -6,7 +6,7 @@
     "configurations": [
         
         {
-            "type": "node",
+            "type": "pwa-node",
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
@@ -14,9 +14,10 @@
             ],
             "program": "${workspaceFolder}/bin/run",
             "args":[
-                "${workspaceFolder}/test/files/op/remove-property-array-index.yaml",
+                "${workspaceFolder}/test/templates/test.template.yaml",
                 "staging",
-                "--output=${workspaceFolder}/test/dist/op/remove-property-array-index-res.yaml"
+                "--output=${workspaceFolder}/test/templates/test.template-res.yaml",
+                "-f"
             ],
             "preLaunchTask": "npm: pretest"
         }
