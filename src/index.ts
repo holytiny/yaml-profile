@@ -159,10 +159,6 @@ class Yprofile extends Command {
     // console.log(yaml);
     const outputFilePath = output ? output : input + '.out'
     const yamlStr = YAML.stringify(yaml, {indentSeq: false})
-    if (force) {
-      this.genFile(yamlStr, outputFilePath)
-      return
-    }
     if (fs.existsSync(outputFilePath) === false) {
       this.genFile(yamlStr, outputFilePath)
     } else {
@@ -170,13 +166,22 @@ class Yprofile extends Command {
       const yaml2 = YAML.parse(outputFile)
       const yaml2Str = YAML.stringify(yaml2, {indentSeq: false})
       if (isYamlSame(yamlStr, yaml2Str)) {
-        this.log('The output file has already exsited and it is the same as the file generated. So file output is skipped. ',
-          'If whatever you still want to write the file, please use -f flag')
+        this.log(`The output file ${outputFilePath} has already exsited and it is the same as the file generated. So file output is skipped.`)
+        return
       } else {
-        this.error(
-          `The output file ${outputFilePath} has already exsited, the generated file WILL NOT BE OUTPUTED!`,
-          {exit: ReturnCode.GenerateFileAlreadyExisted}
-        )
+        if (force) {
+          const backup = outputFilePath + '.backup';
+          this.log(`The output file ${outputFilePath} has already exsited, this file will be backedup as ${backup}`)
+          fs.copyFileSync(outputFilePath, backup)
+          this.genFile(yamlStr, outputFilePath)
+          return
+        } else {
+          this.error(
+            `The output file ${outputFilePath} has already exsited, the generated file WILL NOT BE OUTPUTED!`,
+            {exit: ReturnCode.GenerateFileAlreadyExisted}
+          )
+        }
+        
       }
     }
   }
