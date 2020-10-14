@@ -29,7 +29,7 @@ USAGE
 ```
 <!-- usagestop -->
 
-# Commands
+## Commands
 
 <!-- commands -->
 
