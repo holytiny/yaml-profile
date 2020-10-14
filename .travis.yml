@@ -2,6 +2,10 @@ language: node_js
 node_js:
 - node
 cache: npm
+branches:
+  only:
+    - main
+    - /^v(\d+\.)(\d+\.)(\d+)((-alpha.(\d)+)|(-beta.(\d)+))?$/
 script:
 - "./bin/run --version"
 - "./bin/run --help"

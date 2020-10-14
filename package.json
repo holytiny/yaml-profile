@@ -1,7 +1,7 @@
 {
   "name": "@holytiny/yprofile",
   "description": "A tool to generate yaml file use 'in-block' profile.",
-  "version": "0.0.2-beta.4",
+  "version": "0.0.2-beta.5",
   "author": "sake",
   "bin": {
     "yprofile": "./bin/run"
@@ -41,14 +41,22 @@
   ],
   "homepage": "https://github.com/holytiny/yaml-profile/#readme",
   "keywords": [
-    "oclif"
+    "cli",
+    "yaml",
+    "profile",
+    "template",
+    "generate",
+    "generator"
   ],
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
     "bin": "yprofile"
   },
-  "repository": "https://github.com/holytiny/yaml-profile.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holytiny/yaml-profile.git"
+  },
   "scripts": {
     "start": "launch",
     "pretest": "rm -rf test/dist/*",
