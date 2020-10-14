@@ -11,6 +11,7 @@
     "@oclif/command": "1.8.0",
     "@oclif/config": "1.17.0",
     "@oclif/plugin-help": "3.2.0",
+    "moment": "2.29.1",
     "ts-md5": "1.2.7",
     "tslib": "1.13.0",
     "yaml": "1.10.0"

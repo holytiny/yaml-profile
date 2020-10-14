@@ -1,7 +1,7 @@
-
 import * as fs from 'fs'
 import * as YAML from 'yaml'
 import * as path from 'path'
+import * as moment from 'moment'
 
 import {Command, flags} from '@oclif/command'
 import {ReturnCode} from './return-code'
@@ -170,7 +170,8 @@ class Yprofile extends Command {
         return
       } else {
         if (force) {
-          const backup = outputFilePath + '.backup';
+          const time = moment().utc().local().format('yyyy-MM-D-hh:mm:ss');
+          const backup = outputFilePath + '-' + time + '.yaml';
           this.log(`The output file ${outputFilePath} has already exsited, this file will be backedup as ${backup}`)
           fs.copyFileSync(outputFilePath, backup)
           this.genFile(yamlStr, outputFilePath)
