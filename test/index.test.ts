@@ -151,13 +151,12 @@ describe('yprofile generate', () => {
       '-f',
     ])
   })
-  .it('should generate file when flag -f', (ctx) => {
-    console.log(ctx.stdout)
+  .it('should generate file when flag -f', () => {
     const yamlFile = fs.readFileSync('test/files/generate/test-res.yaml', 'utf8')
     const yaml = YAML.parse(yamlFile)
     const yamlStr = YAML.stringify(yaml, {indentSeq: false})
 
-    const yamlSameFile = fs.readFileSync('test/files/generate/force-exist.yaml', 'utf8')
+    const yamlSameFile = fs.readFileSync('test/dist/generate/force-exist.yaml', 'utf8')
     const yamlSame = YAML.parse(yamlSameFile)
     const yamlSameStr = YAML.stringify(yamlSame, {indentSeq: false})
     const ret = isYamlSame(yamlStr, yamlSameStr)
