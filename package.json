@@ -41,7 +41,12 @@
   ],
   "homepage": "https://github.com/holytiny/yaml-profile/#readme",
   "keywords": [
-    "oclif"
+    "cli",
+    "yaml",
+    "profile",
+    "template",
+    "generate",
+    "generator"
   ],
   "license": "MIT",
   "main": "lib/index.js",
