@@ -21,7 +21,7 @@ $ npm install -g @holytiny/yprofile
 $ yprofile COMMAND
 running command...
 $ yprofile (-v|--version|version)
-@holytiny/yprofile/0.0.2-beta.3 darwin-x64 node-v12.18.4
+@holytiny/yprofile/0.0.2-beta.4 darwin-x64 node-v12.18.4
 $ yprofile --help [COMMAND]
 USAGE
   $ yprofile COMMAND
