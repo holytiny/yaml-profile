@@ -4,9 +4,9 @@ import * as path from 'path'
 import * as moment from 'moment'
 
 import {Command, flags} from '@oclif/command'
-import {ReturnCode} from '../return-code'
-import {isYamlSame} from '../util'
-import {ArrayParser} from '../util'
+import {ReturnCode} from '../common/return-code'
+import {isYamlSame} from '../common/util'
+import {ArrayParser} from '../common/util'
 
 interface Selected {
   item: any;

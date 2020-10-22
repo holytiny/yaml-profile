@@ -1,7 +1,7 @@
 import {expect, test} from '@oclif/test'
-import {ReturnCode} from '../../src/return-code'
+import {ReturnCode} from '../../src/common/return-code'
 import * as YAML from 'yaml'
-import {isYamlSame} from '../../src/util'
+import {isYamlSame} from '../../src/common/util'
 import * as fs from 'fs'
 
 import cmd = require('../../src')
