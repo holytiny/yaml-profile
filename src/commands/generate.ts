@@ -17,6 +17,7 @@ interface Selected {
 
 class Yprofile extends Command {
   static aliases = ['gen']
+
   static description =
     'Generate yaml file from yaml file template with in-block profiles';
 

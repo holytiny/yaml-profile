@@ -1,69 +1,69 @@
 import {expect, test} from '@oclif/test'
-import {ReturnCode} from '../src/return-code'
+import {ReturnCode} from '../../src/return-code'
 import * as YAML from 'yaml'
-import {isYamlSame} from '../src/util'
+import {isYamlSame} from '../../src/util'
 import * as fs from 'fs'
 
-import cmd = require('../src')
+import cmd = require('../../src')
 
 describe('yprofile profile', () => {
   test
-  .do(() => cmd.run(['test/files/profile/no-profiles.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-profiles.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoProfilesSection)
   .it(`should exit with code ${ReturnCode.ProfileNoProfilesSection} when no profiles section`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-name.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-name.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoName)
   .it(`should exit with code ${ReturnCode.ProfileNoName} when no name in patch`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-profile.yaml', 'dev']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-profile.yaml', 'dev']))
   .exit(ReturnCode.ProfileNoProfile)
   .it(`should exit with code ${ReturnCode.ProfileNoProfile} when no profile according to the PROFILE arg`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-patches.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-patches.yaml', 'staging']))
   .exit(ReturnCode.ProfileNoPatches)
   .it(`should exit with code ${ReturnCode.ProfileNoPatches} when no patches section`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-patch.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-patch.yaml', 'staging']))
   .exit(ReturnCode.OK)
   .it(`should exit with code ${ReturnCode.OK} when no patch in patches section`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-op.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-op.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchNoOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchNoOp} when no op defined`)
 
   test
-  .do(() => cmd.run(['test/files/profile/typo-replace.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/typo-replace.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchWrongOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op replace value`)
 
   test
-  .do(() => cmd.run(['test/files/profile/typo-remove.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/typo-remove.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchWrongOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op add value`)
 
   test
-  .do(() => cmd.run(['test/files/profile/typo-add.yaml', 'production']))
+  .do(() => cmd.run(['gen', 'test/files/profile/typo-add.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchWrongOp)
   .it(`should exit with code ${ReturnCode.ProfilePatchWrongOp} when wrong op add value`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-path.yaml', 'staging']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-path.yaml', 'staging']))
   .exit(ReturnCode.ProfilePatchNoPath)
   .it(`should exit with code ${ReturnCode.ProfilePatchNoPath} when no path in patch`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-value-add.yaml', 'production']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-value-add.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchAddOrReplaceNoValue)
   .it(`should exit with code ${ReturnCode.ProfilePatchAddOrReplaceNoValue} when no value to add`)
 
   test
-  .do(() => cmd.run(['test/files/profile/no-value-replace.yaml', 'production']))
+  .do(() => cmd.run(['gen', 'test/files/profile/no-value-replace.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchAddOrReplaceNoValue)
   .it(`should exit with code ${ReturnCode.ProfilePatchAddOrReplaceNoValue} when no value to replace`)
 })
@@ -76,12 +76,13 @@ describe('yprofile op', () => {
   //   expect(ctx.stdout).to.contain('hello jeff')
   // })
   test
-  .do(() => cmd.run(['test/files/op/add-property-exist.yaml', 'production']))
+  .do(() => cmd.run(['gen', 'test/files/op/add-property-exist.yaml', 'production']))
   .exit(ReturnCode.ProfilePatchAddPropertyExisted)
   .it(`should exit with code ${ReturnCode.ProfilePatchAddPropertyExisted} when property already existed during add op`)
 
   test
   .do(() => cmd.run([
+    'gen',
     'test/files/op/remove-property-array-equal-mix.yaml',
     'staging',
     '--output=test/dist/op/remove-property-array-equal-mix-res.yaml',
@@ -100,6 +101,7 @@ describe('yprofile op', () => {
 
   test
   .do(() => cmd.run([
+    'gen',
     'test/files/op/replace-property-array-equal-mix.yaml',
     'staging',
     '--output=test/dist/op/replace-property-array-equal-mix-res.yaml',
@@ -118,6 +120,7 @@ describe('yprofile op', () => {
 
   test
   .do(() => cmd.run([
+    'gen',
     'test/files/op/add-property-arry-equal-mix.yaml',
     'production',
     '--output=test/dist/op/add-property-arry-equal-mix-res.yaml',
@@ -145,6 +148,7 @@ describe('yprofile generate', () => {
     }
     fs.writeFileSync('test/dist/generate/force-exist.yaml', 'exist')
     await cmd.run([
+      'gen',
       'test/files/generate/test.yaml',
       'production',
       '--output=test/dist/generate/force-exist.yaml',
@@ -167,6 +171,7 @@ describe('yprofile generate', () => {
   .do(async () => {
     fs.writeFileSync('test/files/generate/diff-exist.yaml', 'diff')
     await cmd.run([
+      'gen',
       'test/files/generate/test.yaml',
       'production',
       '--output=test/files/generate/diff-exist.yaml',
@@ -185,6 +190,7 @@ describe('yprofile generate', () => {
     }
     fs.writeFileSync('test/dist/generate/same-exist-before-time', `${stats.mtime}`)
     await cmd.run([
+      'gen',
       'test/files/generate/test.yaml',
       'production',
       '--output=test/files/generate/same-exist.yaml',
