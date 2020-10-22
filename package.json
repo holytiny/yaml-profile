@@ -1,6 +1,6 @@
 {
   "name": "@holytiny/yprofile",
-  "description": "A tool to generate yaml file use in-block profile.",
+  "description": "A tool to generate yaml file use in-block profile, to make gitops more comfortable",
   "version": "1.0.0",
   "author": "sake",
   "bin": {
@@ -46,7 +46,9 @@
     "profile",
     "template",
     "generate",
-    "generator"
+    "generator",
+    "gitops",
+    "tool"
   ],
   "license": "MIT",
   "main": "lib/index.js",

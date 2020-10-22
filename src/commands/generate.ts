@@ -15,7 +15,7 @@ interface Selected {
   selector: string;
 }
 
-class Yprofile extends Command {
+class Gnerate extends Command {
   static aliases = ['gen']
 
   static description =
@@ -53,7 +53,7 @@ class Yprofile extends Command {
   ];
 
   async run() {
-    const {args, flags} = this.parse(Yprofile)
+    const {args, flags} = this.parse(Gnerate)
 
     const {yaml, profiles} = this.getYaml(args.input_file)
     this.checkProfiles(profiles)
@@ -283,4 +283,4 @@ class Yprofile extends Command {
   }
 }
 
-export = Yprofile;
+export = Gnerate;
