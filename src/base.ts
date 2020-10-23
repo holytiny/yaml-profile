@@ -14,7 +14,6 @@ interface Selected {
 }
 
 export default abstract class extends Command {
-
   protected getYaml(inputFilePath: string) {
     const inputFile = fs.readFileSync(inputFilePath, 'utf8')
     const yaml = YAML.parse(inputFile)

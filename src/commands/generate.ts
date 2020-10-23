@@ -43,8 +43,6 @@ class Generate extends Command {
     }),
   };
 
-  
-
   async run() {
     const {args, flags} = this.parse(Generate)
 
