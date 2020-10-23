@@ -1,38 +1,21 @@
+import Command from '../base'
+import {flags} from '@oclif/command'
+
 import * as fs from 'fs'
 import * as YAML from 'yaml'
 import * as path from 'path'
 import * as moment from 'moment'
 
-import {flags} from '@oclif/command'
-
 import {ReturnCode} from '../common/return-code'
 import {isYamlSame} from '../common/util'
-import Command from '../base'
 
-class Gnerate extends Command {
+class Generate extends Command {
   static aliases = ['gen']
 
   static description =
     'Generate yaml file from yaml file template with in-block profiles';
 
   // static usage = `'input file' --profile='profile in inputfile' [--out='output file]' `;
-
-  static flags = {
-    // add --version flag to show CLI version
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    output: flags.string({
-      char: 'o',
-      description:
-        'the output file path. Default to the same path as input file and suffix with .out',
-    }),
-    force: flags.boolean({
-      char: 'f',
-      default: false,
-      description: 'generate the yaml file to output file regardless whether a file has already existed',
-    }),
-  };
-
   static args = [
     {
       name: 'input_file',
@@ -46,8 +29,24 @@ class Gnerate extends Command {
     },
   ];
 
+  static flags = {
+    help: flags.help({char: 'h'}),
+    output: flags.string({
+      char: 'o',
+      description:
+        'the output file path. Default to the same path as input file and suffix with .out',
+    }),
+    force: flags.boolean({
+      char: 'f',
+      default: false,
+      description: 'generate the yaml file to output file regardless whether a file has already existed',
+    }),
+  };
+
+  
+
   async run() {
-    const {args, flags} = this.parse(Gnerate)
+    const {args, flags} = this.parse(Generate)
 
     const {yaml, profiles} = this.getYaml(args.input_file)
     this.checkProfiles(profiles)
@@ -171,4 +170,4 @@ class Gnerate extends Command {
   }
 }
 
-export = Gnerate;
+export = Generate;
