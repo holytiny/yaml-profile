@@ -1,7 +1,7 @@
 {
   "name": "@holytiny/yprofile",
-  "description": "A tool to generate yaml file use 'in-block' profile.",
-  "version": "1.0.0",
+  "description": "A tool to generate yaml file use in-block profile, to make gitops more comfortable",
+  "version": "2.0.0",
   "author": "sake",
   "bin": {
     "yprofile": "./bin/run"
@@ -46,12 +46,18 @@
     "profile",
     "template",
     "generate",
-    "generator"
+    "generator",
+    "gitops",
+    "tool"
   ],
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
-    "bin": "yprofile"
+    "commands": "./lib/commands",
+    "bin": "yprofile",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
   },
   "repository": {
     "type": "git",
