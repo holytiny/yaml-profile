@@ -1,11 +1,16 @@
-import Command from '../base'
+import Command from '../base-op'
 import {flags} from '@oclif/command'
 
-class Set extends Command {
+class Add extends Command {
   static description =
-    'Set the value of a yaml file in specific path'
+    'add a property and value pair in a yaml, mainly used for gitops ci'
 
   static args = [
+    {
+      name: 'input_file',
+      required: true,
+      description: 'the file path of the yaml, such as /home/john/workspace/ci.yaml',
+    },
     {
       name: 'path',
       required: true,
@@ -23,9 +28,9 @@ class Set extends Command {
   }
 
   async run() {
-    // const {args, flags} = this.parse(Set)
-
+    const {args} = this.parse(Add)
+    this.processCmd(args.input_file, 'add', args.path, args.value)
   }
 }
 
-export = Set;
+export = Add;
