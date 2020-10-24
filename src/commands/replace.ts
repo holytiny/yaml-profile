@@ -7,7 +7,7 @@ class Set extends Command {
 
   static args = [
     {
-      name: 'file',
+      name: 'input_file',
       required: true,
       description: 'the file path of the yaml, such as /home/john/workspace/ci.yaml',
     },
@@ -28,8 +28,9 @@ class Set extends Command {
   }
 
   async run() {
-    // const {args, flags} = this.parse(Set)
-
+    const {args} = this.parse(Set)
+    const {yaml} = this.getYaml(args.input_file)
+    this.processCmd(yaml, 'replace', args.path, args.value)
   }
 }
 

@@ -1,0 +1,18 @@
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+  frontend:
+    image: john/frontend
+deployments:
+- name: backend
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: john/devbackend
+      - image: john/debugger
+      - image: john/cache
+      - image: john/frontend
+version: 1.0.0
