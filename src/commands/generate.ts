@@ -13,7 +13,7 @@ class Generate extends Command {
   static aliases = ['gen']
 
   static description =
-    'Generate yaml file from yaml file template with in-block profiles';
+    'generate yaml file from yaml file template with in-block profiles, for manual use';
 
   // static usage = `'input file' --profile='profile in inputfile' [--out='output file]' `;
   static args = [
