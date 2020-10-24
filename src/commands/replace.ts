@@ -1,7 +1,7 @@
 import Command from '../base-op'
 import {flags} from '@oclif/command'
 
-class Set extends Command {
+class Replace extends Command {
   static description =
     'replace a property and value pair in a yaml, mainly used for gitops ci'
 
@@ -28,10 +28,9 @@ class Set extends Command {
   }
 
   async run() {
-    const {args} = this.parse(Set)
-    const {yaml} = this.getYaml(args.input_file)
-    this.processCmd(yaml, 'replace', args.path, args.value)
+    const {args} = this.parse(Replace)
+    this.processCmd(args.input_file, 'replace', args.path, args.value)
   }
 }
 
-export = Set;
+export = Replace;

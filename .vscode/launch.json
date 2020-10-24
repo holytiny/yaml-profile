@@ -14,10 +14,9 @@
             ],
             "program": "${workspaceFolder}/bin/run",
             "args":[
-                "add",
+                "remove",
                 "${workspaceFolder}/test/templates/test.content.yaml",
                 "version",
-                "0.0.1"
             ],
             "preLaunchTask": "npm: pretest"
         }

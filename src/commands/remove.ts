@@ -1,7 +1,7 @@
 import Command from '../base-op'
 import {flags} from '@oclif/command'
 
-class Set extends Command {
+class Remove extends Command {
   static description =
     'remove a property and its value from a yaml, mainly used for gitops ci'
 
@@ -23,10 +23,9 @@ class Set extends Command {
   }
 
   async run() {
-    const {args} = this.parse(Set)
-    const {yaml} = this.getYaml(args.input_file)
-    this.processCmd(yaml, 'remove', args.path, args.value)
+    const {args} = this.parse(Remove)
+    this.processCmd(args.input_file, 'remove', args.path, '')
   }
 }
 
-export = Set;
+export = Remove;

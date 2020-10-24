@@ -1,0 +1,11 @@
+images:
+  backend:
+    image: john/devbackend
+deployments:
+- name: backend
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: john/devbackend
+      - image: john/debugger

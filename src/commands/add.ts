@@ -1,7 +1,7 @@
 import Command from '../base-op'
 import {flags} from '@oclif/command'
 
-class Set extends Command {
+class Add extends Command {
   static description =
     'add a property and value pair in a yaml, mainly used for gitops ci'
 
@@ -28,9 +28,9 @@ class Set extends Command {
   }
 
   async run() {
-    const {args} = this.parse(Set)
+    const {args} = this.parse(Add)
     this.processCmd(args.input_file, 'add', args.path, args.value)
   }
 }
 
-export = Set;
+export = Add;
