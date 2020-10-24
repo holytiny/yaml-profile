@@ -9,10 +9,13 @@ A tool to generate yaml file use &#39;in-block&#39; profile.
 [![License](https://img.shields.io/npm/l/@holytiny/yprofile.svg)](https://github.com/holytiny/yaml-profile/blob/main/LICENSE)
 
 - [Motivation](#motivation)
+  - [Profile](#profile)
+  - [Directly](#directly)
 - [Quick Start](#quick-start)
   - [Install](#install)
-  - [Basic usage](#basic-usage)
+  - [Basic Usage](#basic-usage)
 - [Details](#details)
+  - [Profile Usage](#profile-usage)
   - [Profiles](#profiles)
   - [Path](#path)
   - [Selector](#selector)
@@ -23,11 +26,17 @@ A tool to generate yaml file use &#39;in-block&#39; profile.
   - [File Generate](#file-generate)
     - [Logic](#logic)
     - [Why](#why)
-  - [NOTICE](#notice)
+  - [Directly Modify](#directly-modify)
+    - [Add](#add)
+    - [Remove](#remove)
+    - [Replace](#replace)
+- [NOTICE](#notice)
 
 # Motivation
 
-Sometimes, we find that we need to modify the yaml file slightly under different conditions or in the different stages of the project. For example, we might use a yaml file to control the ci/cd system, for develop:
+## Profile
+
+Sometimes, we would find that we need to modify the yaml file slightly under different conditions or in the different stages of the project. For example, we might use a yaml file to control the ci/cd system, for develop:
 
 ```yaml
 images:
@@ -81,7 +90,23 @@ deployments:
 
 Maintaining such yaml files is tendious and error prone. An elegant solution is to generate the yaml files from a template file, and save the modification actions in git repo. A devops tool [devspace](https://devspace.sh/cli/docs/configuration/profiles/basics) provides a method to support such solutions, however, saddly it can only be used to its own config file.
 
-Motivated by [devspace](https://devspace.sh/cli/docs/configuration/profiles/basics), [yprofile](#yprofile) provide nearly the same profile operations to any yaml files with profiles section, and use this template to generate templates as profile describing.
+Motivated by [devspace](https://devspace.sh/cli/docs/configuration/profiles/basics), [yprofile](#yprofile) provide nearly the same profile operations to any yaml files with profiles section, and use this template to generate templates as profile describing. These functions are supported by yprofile as `generate` command.
+
+```sh-session
+yprofile generate
+```
+
+## Directly
+
+We will find that sometimes we have to modify the yaml file directly in ci script, especially in gitops processes. For example, if we use helm as the manifest, during the ci process we need to modify the helm chart, at least the appVersion property, in another git repo for cd tools to deploy our containers to dock compose or k8s.
+
+So it may be helpful the the yaml file can be directly modified from the command line. These functions are supported by yprofile as `operate` command.
+
+```sh-session
+yprofile add
+yprofile remove
+yprofile replace
+```
 
 # Quick Start
 
@@ -95,17 +120,14 @@ npm install @holytiny/yprofile -D
 
 ```sh-session
 USAGE
-  $ yprofile INPUT_FILE PROFILE
+  $ yprofile [COMMAND]
 
-ARGUMENTS
-  INPUT_FILE  input yaml file with profiles in block
-  PROFILE     the profile used to generate the yaml file
-
-OPTIONS
-  -f, --force          generate the yaml file to output file regardless whether a file has already existed
-  -h, --help           show CLI help
-  -o, --output=output  the output file path. Default to the same path as input file and suffix with .out
-  -v, --version        show CLI version
+COMMANDS
+  add       add a property and value pair in a yaml, mainly used for gitops ci
+  generate  generate yaml file from yaml file template with in-block profiles, for manual use
+  help      display help for yprofile
+  remove    remove a property and its value from a yaml, mainly used for gitops ci
+  replace   replace a property and value pair in a yaml, mainly used for gitops ci
 ```
 
 If we have a template yaml file named `test.template.yaml`:
@@ -148,7 +170,7 @@ profiles:
 After we run the command:
 
 ```sh-session
-npx yprofile test.template.yaml staging --output=test.yaml
+npx yprofile generate test.template.yaml staging --output=test.yaml
 ```
 
 We would get a yaml file named `test.yaml`:
@@ -168,7 +190,58 @@ deployments:
           - image: john/devbackend
 ```
 
+If a yaml file named `Chart.yaml`:
+
+```yaml
+apiVersion: v2
+name: first-chart
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: 1.16.0
+```
+
+After we run the command:
+
+```
+yprofile replace Chart.yaml appVersion 1.16.1
+```
+
+The Chart.yaml will become:
+
+```yaml
+apiVersion: v2
+name: first-chart
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: 1.16.1
+```
+
+This would be very useful in gitops ci script.
+
 # Details
+
+## Profile Usage
+
+Simply speaking, yprofile uses `generate` or abbreviation form `gen` command to generate the yaml file from a template which has `profiles` section.
+
+```sh-session
+USAGE
+  $ yprofile generate INPUT_FILE PROFILE
+
+ARGUMENTS
+  INPUT_FILE  input yaml file with profiles in block
+  PROFILE     the profile used to generate the yaml file
+
+OPTIONS
+  -f, --force          generate the yaml file to output file regardless whether a file has already existed
+  -h, --help           show CLI help
+  -o, --output=output  the output file path. Default to the same path as input file and suffix with .out
+
+ALIASES
+  $ yprofile gen
+```
 
 ## Profiles
 
@@ -285,7 +358,7 @@ profiles:
 Run yprofile:
 
 ```sh-session
-npx yprofile add-test.yaml production --output=add-test-res.yaml
+npx yprofile gen add-test.yaml production --output=add-test-res.yaml
 ```
 
 The output file of `add-test-res.yaml` should be:
@@ -352,7 +425,7 @@ profiles:
 Run yprofile:
 
 ```sh-session
-npx yprofile replace-test.yaml staging --output=replace-test-res.yaml
+npx yprofile gen replace-test.yaml staging --output=replace-test-res.yaml
 ```
 
 The output file of `replace-test-res.yaml` should be:
@@ -408,7 +481,7 @@ profiles:
 Run yprofile:
 
 ```sh-session
-npx yprofile replace-test.yaml staging --output=replace-test-res.yaml
+npx yprofile gen replace-test.yaml staging --output=replace-test-res.yaml
 ```
 
 The output file of `replace-test-res.yaml` should be:
@@ -448,11 +521,217 @@ This feature is for file debug.
 
 Suppose that you generate a file named `test.yaml` using yprofile from the yaml template file `test.template.yaml`, and the `test.yaml` doesn't work, you can modify the content of `test.yaml` directly to test the function. After every things being done, you can use `-f` flag to regenerate the `test.yaml` file and you would have tow file, the `test.yaml` file which is buggy, and the backup file may named `test-2020-10-11-13:45:18.yaml` which is correct, then you can compare the two file to verify that the content of the template is correct.
 
+## Directly Modify
+
+We can run yprofile to modify the yaml file directly rather than using profiles section.
+
+The concepts used in such `directly modify` command is the same as profile methods.
+
+### Add
+
+```sh-session
+add a property and value pair in a yaml, mainly used for gitops ci
+
+USAGE
+  $ yprofile add INPUT_FILE PATH VALUE
+
+ARGUMENTS
+  INPUT_FILE  the file path of the yaml, such as /home/john/workspace/ci.yaml
+  PATH        the path of the value to be added, such as ingress.enable
+  VALUE       the value to be added, such as true or false
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+If we have a yaml file named `add.yaml`:
+
+```yaml
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/devbackend
+          - image: john/debugger
+```
+
+Run yprofile add:
+
+```sh-session
+npx yprofile add add.yaml version 1.0.0
+
+npx yprofile add add.yaml images.frontend image: john/frontend
+
+npx yprofile add add.yaml deployments.name=backend.helm.values.containers image: john/cache
+
+npx yprofile add add.yaml deployments[0].helm.values.containers image: john/frontend
+```
+
+The `add.yaml` should become:
+
+```yaml
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+  frontend:
+    image: john/frontend
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/devbackend
+          - image: john/debugger
+          - image: john/cache
+          - image: john/frontend
+version: 1.0.0
+```
+
+### Remove
+
+```sh-session
+remove a property and its value from a yaml, mainly used for gitops ci
+
+USAGE
+  $ yprofile remove INPUT_FILE PATH
+
+ARGUMENTS
+  INPUT_FILE  the file path of the yaml, such as /home/john/workspace/ci.yaml
+  PATH        the path of the value to be removed, such as ingress.enable
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+If we have a yaml file named `remove.yaml`:
+
+```yaml
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/devbackend
+          - image: john/debugger
+          - image: john/cache
+          - image: john/frontend
+```
+
+Run `yprofile remove`:
+
+```sh-session
+npx yprofile remove remove.yaml images.backend-debugger
+
+npx yprofile remove remove.yaml deployments.name=backend.
+
+npx yprofile remove remove.yaml deployments.name=backend.helm.values.containers.image=john/cache
+```
+
+The `remove.yaml` should become:
+
+```yaml
+images:
+  backend:
+    image: john/devbackend
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/devbackend
+          - image: john/debugger
+```
+
+### Replace
+
+```sh-session
+replace a property and value pair in a yaml, mainly used for gitops ci
+
+USAGE
+  $ yprofile replace INPUT_FILE PATH VALUE
+
+ARGUMENTS
+  INPUT_FILE  the file path of the yaml, such as /home/john/workspace/ci.yaml
+  PATH        the path of the value to be replaced, such as ingress.enable
+  VALUE       the value to be replaced, such as true or false
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+If we have a file named `replace.yaml`:
+
+```yaml
+images:
+  backend:
+    image: john/devbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/devbackend
+          - image: john/devfrontend
+          - image: john/debugger
+```
+
+If we run `yprofile replace`:
+
+```sh-session
+npx yprofile replace replace.yaml images.backend.image john/stagingbackend
+
+npx yprofile replace replace.yaml deployments[0].helm.values.containers[0] image: john/backend
+
+npx yprofile replace replace.yaml deployments.name=backend.helm.values.containers.image=john/devfrontend image: john/frontend
+
+npx yprofile replace replace.yaml deployments.name=backend.helm.values.containers[2] image: john/deploy
+```
+
+The `replace.yaml` should become:
+
+```yaml
+images:
+  backend:
+    image: john/stagingbackend
+  backend-debugger:
+    image: john/debugger
+deployments:
+  - name: backend
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: john/backend
+          - image: john/frontend
+          - image: john/deploy
+```
+
 # NOTICE
 
 - Try to always use the = sign to select the arry
 - Only use [] sign at the end of the path, if you want to use [] sign selector to select array element
 - Try hard to **avoid** create patch rely on the results of other patches
+- The content of output yaml file is sorted
 
 ## Try to always use the = sign to select the arry
 
@@ -471,3 +750,11 @@ read the template -> read the profile -> do all patches to the template -> outpu
 So the conent of the output **DO NOT CHANGE** actually after each patch before it is write to the output file.
 
 This may conflict with your intuition，so please don't generate the file rely on the logic between each patch!!!
+
+If you really need such functions, please consider using [directly modify](#directly-modify) methods.
+
+## The content of output yaml file is sorted
+
+To **sematicly** compare two yaml files, the yaml file is sorted immediatly after it is read, so the output of the yaml file is also sorted.
+
+So the sequence of the output yaml file sections may be different from the input file.
